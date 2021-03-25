@@ -84,5 +84,16 @@ public class AddressBookDatabase {
 
     }
 
+    public void Update(){
+        String SqlQuery="update AddressBookTable set Zip=40000 where FirstName=Mayur ";
+        try {
+            Connection connection=this.getConnection();
+            Statement statement=connection.createStatement();
+            long resultset=statement.executeUpdate(SqlQuery);
+        }catch (SQLException | IllegalAccessException e){
+            e.printStackTrace();
+        }
+    }
+
 
 }

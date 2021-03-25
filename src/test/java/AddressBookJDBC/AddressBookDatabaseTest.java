@@ -15,4 +15,12 @@ class AddressBookDatabaseTest {
         Assertions.assertEquals(4,addressBookData1.size());
 
     }
+
+    @Test
+    void UpdateTable(){
+        AddressBookDatabase addressBookDatabase=new AddressBookDatabase();
+        addressBookDatabase.Update();
+        List<AddressBookData>payrollServiceDataList=addressBookDatabase.readData();
+        Assertions.assertEquals(4,payrollServiceDataList.size());
+    }
 }
