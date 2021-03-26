@@ -14,5 +14,11 @@ class AddressBookDatabaseTest {
         Assertions.assertEquals(4,addressBookData1.size());
     }
 
-
+    @Test
+    void update_Record_into_database_returnCount_Test(){
+        AddressBookDatabase addressBookDatabase=new AddressBookDatabase();
+        addressBookDatabase.update_Record_into_database_returnCount();
+        List<AddressBookData>payrollServiceDataList=addressBookDatabase.readData();
+        Assertions.assertEquals(4,payrollServiceDataList.size());
+    }
 }
