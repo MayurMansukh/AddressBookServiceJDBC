@@ -40,4 +40,12 @@ class AddressBookDatabaseTest {
         List<AddressBookData>payrollServiceDataList=addressBookDatabase.readData();
         Assertions.assertEquals(4,payrollServiceDataList.size());
     }
+
+    @Test
+    public void return_values_for_a_particular_date_range_test() throws SQLException, IllegalAccessException {
+        String date="2018-01-01";
+        AddressBookDatabase addressBookDatabase= new AddressBookDatabase();
+        List<AddressBookData> addressBookList=addressBookDatabase.returnValuesForApaticularDateRange(date);
+        Assertions.assertEquals(3,addressBookList.size());
+    }
 }
