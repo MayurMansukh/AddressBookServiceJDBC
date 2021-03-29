@@ -46,22 +46,15 @@ public class AddressBookDatabase {
                 String Email=resultSet.getString(8);
                 String AddressBookName=resultSet.getString(9);
 
-                System.out.println();
-                System.out.println("FirstName="+FirstName);
-                System.out.println("LastName=" + LastName);
-                System.out.println("AddressBookType=" + AddressBookType);
-                System.out.println("City=" + city);
-                System.out.println("State=" + State);
-                System.out.println("Zip=" + Zip);
-                System.out.println("Email=" + Email);
-                System.out.println("AddressBookName"+AddressBookName);
 
                 AddressBookData addressBookData1=new AddressBookData(resultSet.getString(1),resultSet.getString(2),
                         resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getString(6),
                         resultSet.getInt(7),resultSet.getString(8),resultSet.getString(9));
 
                 addressBookData.add(addressBookData1);
+
             }
+            System.out.println(addressBookData.toString());
             statement.close();
             connection.close();
         } catch (SQLException | IllegalAccessException e) {
@@ -80,6 +73,29 @@ public class AddressBookDatabase {
             e.printStackTrace();
         }
     }
+
+    public void updateAddressBookDetails(String firstName, String lastName, String addressBookType, String address, String city, String state, int zip, String email, String addressBookName) throws SQLException, IllegalAccessException {
+        Connection connection=this.getConnection();
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement=connection.prepareStatement("Update AddressBookTable set LastName=?,AddressBookType=?,Address=?,City=?,State=?,Zip=?,Email=?,AddressBookName=? where firstname=? ; ");
+            preparedStatement.setString(1,lastName);
+            preparedStatement.setString(2,addressBookType);
+            preparedStatement.setString(3,address);
+            preparedStatement.setString(4,city);
+            preparedStatement.setString(5,state);
+            preparedStatement.setInt(6,zip);
+            preparedStatement.setString(7,email);
+            preparedStatement.setString(8,addressBookName);
+            preparedStatement.setString(9,firstName);
+            preparedStatement.executeUpdate();
+            connection.commit();
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+            connection.rollback();
+        }
+    }
+
 
 
 }
