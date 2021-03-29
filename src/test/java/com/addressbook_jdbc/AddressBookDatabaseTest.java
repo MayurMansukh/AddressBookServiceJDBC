@@ -48,4 +48,11 @@ class AddressBookDatabaseTest {
         List<AddressBookData> addressBookList=addressBookDatabase.returnValuesForApaticularDateRange(date);
         Assertions.assertEquals(3,addressBookList.size());
     }
+    @Test
+    public void count_of_rcords_in_a_state() throws SQLException, IllegalAccessException {
+        String state="MH";
+        AddressBookDatabase addressBookDatabase= new AddressBookDatabase();
+        String result=addressBookDatabase.countRecordsbyState(state);
+        Assertions.assertEquals("3",result);
+    }
 }

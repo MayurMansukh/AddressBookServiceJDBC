@@ -118,5 +118,27 @@ public class AddressBookDatabase {
         return addressBookList;
     }
 
+    public String countRecordsbyState(String state) throws SQLException, IllegalAccessException {
+        Connection connection=this.getConnection();
+        String result=null;
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement= connection.prepareStatement("select count(*) from AddressBookTable where state=? ; ");
+            preparedStatement.setString(1,state);
+            ResultSet resultSet=preparedStatement.executeQuery();
+            connection.commit();
+            while (resultSet.next()){
+                result=resultSet.getString(1);
+                System.out.println(resultSet.getString(1));
+            }
+            return result;
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+            connection.rollback();
+        }
+        return result;
+
+    }
+
 
 }
