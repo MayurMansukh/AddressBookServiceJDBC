@@ -55,4 +55,23 @@ class AddressBookDatabaseTest {
         String result=addressBookDatabase.countRecordsbyState(state);
         Assertions.assertEquals("3",result);
     }
+
+    @Test
+    public void insert_new_record_into_address_book_test() throws SQLException, IllegalAccessException {
+        String firstname="rajan";
+        String lastname="kumar";
+        String addressBookType="Friend";
+        String address="pune";
+        String city="pune";
+        String state="MH";
+        int zip=9088009;
+        String email="rajan@gmail.in";
+        String addressBookName="Book4";
+        String joiningDate="2020-01-01";
+
+        AddressBookDatabase addressBookDatabase= new AddressBookDatabase();
+        addressBookDatabase.InserNewRecord(firstname,lastname,addressBookType,address,city,state,zip,email,addressBookName,joiningDate);
+        List<AddressBookData>addressBookData=addressBookDatabase.readData();
+        Assertions.assertEquals(5,addressBookData.size());
+    }
 }
