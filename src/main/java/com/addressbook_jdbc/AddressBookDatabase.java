@@ -1,8 +1,10 @@
 package com.addressbook_jdbc;
 
+import jdk.nashorn.internal.ir.WhileNode;
+
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Date;
+import java.util.*;
 
 public class AddressBookDatabase {
     private Connection getConnection() throws IllegalAccessException {
@@ -49,7 +51,7 @@ public class AddressBookDatabase {
 
                 AddressBookData addressBookData1=new AddressBookData(resultSet.getString(1),resultSet.getString(2),
                         resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getString(6),
-                        resultSet.getInt(7),resultSet.getString(8),resultSet.getString(9),resultSet.getDate(10));
+                        resultSet.getInt(7),resultSet.getString(8),resultSet.getString(9),resultSet.getString(10));
 
                 addressBookData.add(addressBookData1);
 
@@ -106,7 +108,7 @@ public class AddressBookDatabase {
             preparedStatement.setDate(1,Date.valueOf(date));
             ResultSet resultSet=preparedStatement.executeQuery();
             while (resultSet.next()){
-                AddressBookData addressBookData=new AddressBookData(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getString(6),resultSet.getInt(7),resultSet.getString(8),resultSet.getString(9),resultSet.getDate(10));
+                AddressBookData addressBookData=new AddressBookData(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getString(6),resultSet.getInt(7),resultSet.getString(8),resultSet.getString(9),resultSet.getString(10));
                 addressBookList.add(addressBookData);
                 connection.commit();
             }
@@ -162,7 +164,55 @@ public class AddressBookDatabase {
             connection.rollback();
         }
     }
+    private void insertContactUsingThread(String firstName, String lastName, String addressBookType, String address, String city, String state, int zip, String email, String addressBookName, String joiningDate) {
+    }
+    public void insetRecordsUsingArrays(List<AddressBookData> addressBookData) throws SQLException, IllegalAccessException {
+        Connection connection = this.getConnection();
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement=connection.prepareStatement("insert into AddressBookTable(FirstName,LastName,AddressBookType,Address,City,State,Zip,Email,AddressBookName,Joining_Date) values (?,?,?,?,?,?,?,?,?,?); ");
+            for (Iterator<AddressBookData> iterator = addressBookData.iterator(); ((Iterator<?>) iterator).hasNext(); ) {
+                AddressBookData addressBookData1 = (AddressBookData) iterator.next();
+                System.out.println("contact being added  " + addressBookData1.FirstName);
+                preparedStatement.setString(1, addressBookData1.getFirstName());
+                preparedStatement.setString(2, addressBookData1.getLastName());
+                preparedStatement.setString(3, addressBookData1.getAddressBookType());
+                preparedStatement.setString(4, addressBookData1.getAddress());
+                preparedStatement.setString(5, addressBookData1.getCity());
+                preparedStatement.setString(6, addressBookData1.getState());
+                preparedStatement.setInt(7,addressBookData1.getZip());
+                preparedStatement.setString(8,addressBookData1.getEmail());
+                preparedStatement.setString(9,addressBookData1.getAddressBookName());
+                preparedStatement.setString(10,addressBookData1.getJoiningDate());
 
+                System.out.println("employee Added  " + addressBookData1.FirstName);
+                preparedStatement.addBatch();
+            }
+            int[] recordUpdateCounts = preparedStatement.executeBatch();
+            connection.commit();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            connection.rollback();
+        }
+    }
 
+    public void insertContactUsingThread(List<AddressBookData>addressBookData){
+        Map<Integer,Boolean>addressBookStatus=new HashMap<>();
+        addressBookData.forEach(addressBookData1 -> {
+            Runnable task= () -> {
+                addressBookStatus.put(addressBookData.hashCode(),false);
+                System.out.println("contact beging added "+Thread.currentThread().getName());
+                this.insertContactUsingThread(addressBookData1.FirstName,addressBookData1.LastName,addressBookData1.AddressBookType,addressBookData1.Address,addressBookData1.city,addressBookData1.State,addressBookData1.Zip,addressBookData1.Email,addressBookData1.AddressBookName,addressBookData1.JoiningDate);
+            };
+            Thread thread =new Thread(task,addressBookData1.FirstName);
+            thread.start();
+        });
+        while (addressBookStatus.containsValue(false)){
+            try {
+                Thread.sleep(10);
+            }catch ( InterruptedException e){
 
+            }
+        }
+    }
 }
