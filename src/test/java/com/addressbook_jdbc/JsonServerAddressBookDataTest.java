@@ -64,4 +64,19 @@ class JsonServerAddressBookDataTest {
         Assertions.assertEquals(200,statusCode);
     }
 
+    @Test
+    public void deleteContact_ShouldRetun_200ResponseCode() throws SQLException {
+        JsonServerAddressBookData[] restAssureEmployeeData=getContactList();
+        String ContactJson=new Gson().toJson(restAssureEmployeeData);
+
+        RequestSpecification requestSpecification=RestAssured.given();
+        requestSpecification.header("Content-Type","application/json");
+        requestSpecification.body(ContactJson);
+        Response response=requestSpecification.delete("/AddressBook/delete/4");
+
+        int statusCode=response.getStatusCode();
+        Assertions.assertEquals(200,statusCode);
+    }
+
+
 }
