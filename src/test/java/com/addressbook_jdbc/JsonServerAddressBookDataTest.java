@@ -39,4 +39,14 @@ class JsonServerAddressBookDataTest {
         System.out.println(restAssureContactData);
         Assertions.assertEquals(3, restAssureContactData.length);
     }
+    @Test
+    public void addMultipleContact_shouldReturn_201ResponseCode(){
+        JsonServerAddressBookData[] restAssureContactData=getContactList();
+        JsonServerAddressBookData jsonServerAddressBookData1=new JsonServerAddressBookData(4,"raghu","juyal","Friend","alhabad","bhihar","UP",45367,"Raghu@gmail.com","8899776655");
+        Response response=addContactInJsonServer(jsonServerAddressBookData1);
+        int statusCode= response.statusCode();
+        Assertions.assertEquals(201,statusCode);
+        Assertions.assertEquals(4,restAssureContactData.length);
+    }
+
 }
