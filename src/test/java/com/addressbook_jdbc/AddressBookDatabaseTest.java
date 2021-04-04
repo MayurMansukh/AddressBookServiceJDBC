@@ -2,8 +2,6 @@ package com.addressbook_jdbc;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
@@ -38,7 +36,6 @@ class AddressBookDatabaseTest {
         int zip=400080;
         String email="Mansukhh@gmail.in";
         String addressBookName="Book3";
-
         AddressBookDatabase addressBookDatabase= new AddressBookDatabase();
         addressBookDatabase.updateAddressBookDetails(firstname,lastname,addressBookType,address,city,state,zip,email,addressBookName);
         List<AddressBookData>payrollServiceDataList=addressBookDatabase.readData();
@@ -94,7 +91,7 @@ class AddressBookDatabaseTest {
         Instant threadend = Instant.now();
         System.out.println("Duration using thread "+ Duration.between(threadstart,threadend));
         List<AddressBookData> addressBookData=addressBookDatabase.readData();
-        Assertions.assertEquals(11,addressBookData.size());
+        Assertions.assertEquals(8,addressBookData.size());
 
 
     }

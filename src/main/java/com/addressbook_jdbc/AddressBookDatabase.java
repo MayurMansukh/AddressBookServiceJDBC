@@ -164,8 +164,7 @@ public class AddressBookDatabase {
             connection.rollback();
         }
     }
-    private void insertContactUsingThread(String firstName, String lastName, String addressBookType, String address, String city, String state, int zip, String email, String addressBookName, String joiningDate) {
-    }
+
     public void insetRecordsUsingArrays(List<AddressBookData> addressBookData) throws SQLException, IllegalAccessException {
         Connection connection = this.getConnection();
         try {
@@ -202,7 +201,7 @@ public class AddressBookDatabase {
             Runnable task= () -> {
                 addressBookStatus.put(addressBookData.hashCode(),false);
                 System.out.println("contact beging added "+Thread.currentThread().getName());
-                this.insertContactUsingThread(addressBookData1.FirstName,addressBookData1.LastName,addressBookData1.AddressBookType,addressBookData1.Address,addressBookData1.city,addressBookData1.State,addressBookData1.Zip,addressBookData1.Email,addressBookData1.AddressBookName,addressBookData1.JoiningDate);
+                addressBookStatus.put(addressBookData.hashCode(),true);
             };
             Thread thread =new Thread(task,addressBookData1.FirstName);
             thread.start();
