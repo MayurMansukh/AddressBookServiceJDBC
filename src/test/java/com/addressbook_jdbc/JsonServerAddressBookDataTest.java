@@ -1,4 +1,5 @@
 package com.addressbook_jdbc;
+
 import com.google.gson.Gson;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -6,6 +7,7 @@ import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import java.sql.SQLException;
 
 
 class JsonServerAddressBookDataTest {
@@ -47,6 +49,19 @@ class JsonServerAddressBookDataTest {
         int statusCode= response.statusCode();
         Assertions.assertEquals(201,statusCode);
         Assertions.assertEquals(4,restAssureContactData.length);
+    }
+    @Test
+    public void addNewsalary_ShouldRetun_200ResponseCode() throws SQLException {
+        JsonServerAddressBookData[] restAssureEmployeeData=getContactList();
+        String ContactJson=new Gson().toJson(restAssureEmployeeData);
+        Assertions.assertEquals(4,restAssureEmployeeData.length);
+        RequestSpecification requestSpecification=RestAssured.given();
+        requestSpecification.header("Content-Type","application/json");
+        requestSpecification.body("{\"FirstName\":\"Rahul\",\"Address\":\"Nerul\"}");
+        Response response=requestSpecification.put("/AddressBook/update/2");
+
+        int statusCode=response.getStatusCode();
+        Assertions.assertEquals(200,statusCode);
     }
 
 }
