@@ -51,7 +51,7 @@ class JsonServerAddressBookDataTest {
         Assertions.assertEquals(4,restAssureContactData.length);
     }
     @Test
-    public void addNewsalary_ShouldRetun_200ResponseCode() throws SQLException {
+    public void updateContact_ShouldRetun_200ResponseCode() throws SQLException {
         JsonServerAddressBookData[] restAssureEmployeeData=getContactList();
         String ContactJson=new Gson().toJson(restAssureEmployeeData);
         Assertions.assertEquals(4,restAssureEmployeeData.length);
